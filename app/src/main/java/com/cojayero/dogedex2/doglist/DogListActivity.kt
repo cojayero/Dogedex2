@@ -2,67 +2,29 @@ package com.cojayero.dogedex2.doglist
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.activity.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.cojayero.dogedex2.Dog
 import com.cojayero.dogedex2.databinding.ActivityDogListBinding
-
+private val TAG = DogListActivity::class.java.simpleName
 class DogListActivity : AppCompatActivity() {
+    private val dogListViewModel:DogListViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityDogListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val dogList = getFakeDogs()
         val recycler = binding.dogRecycler
-
+        val viewModel = DogListViewModel()
         val adapter = DogAdapter()
+        recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = adapter
-        adapter.submitList(dogList)
-
+        dogListViewModel.dogList.observe(this){
+           doglist ->  adapter.submitList(doglist)
+            Log.d(TAG, "onCreate: $doglist")
+        }
     }
 
-    private fun getFakeDogs(): MutableList<Dog> {
-        val dogList = mutableListOf<Dog>()
-        dogList.add(
-            Dog(
-                1, 1, "Chihuahua", "Toy", 5.4,
-                6.7, "", "12 - 15", "", 10.5,
-                12.3
-            )
-        )
-        dogList.add(
-            Dog(
-                2, 1, "Labrador", "Toy", 5.4,
-                6.7, "", "12 - 15", "", 10.5,
-                12.3
-            )
-        )
-        dogList.add(
-            Dog(
-                3, 1, "Retriever", "Toy", 5.4,
-                6.7, "", "12 - 15", "", 10.5,
-                12.3
-            )
-        )
-        dogList.add(
-            Dog(
-                4, 1, "San Bernardo", "Toy", 5.4,
-                6.7, "", "12 - 15", "", 10.5,
-                12.3
-            )
-        )
-        dogList.add(
-            Dog(
-                5, 1, "Husky", "Toy", 5.4,
-                6.7, "", "12 - 15", "", 10.5,
-                12.3
-            )
-        )
-        dogList.add(
-            Dog(
-                6, 1, "Xoloscuincle", "Toy", 5.4,
-                6.7, "", "12 - 15", "", 10.5,
-                12.3
-            )
-        )
-        return dogList
-    }
+
 }
