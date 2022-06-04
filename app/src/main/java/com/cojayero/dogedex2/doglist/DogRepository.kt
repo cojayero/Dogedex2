@@ -2,15 +2,19 @@ package com.cojayero.dogedex2.doglist
 
 import com.cojayero.dogedex2.Dog
 import com.cojayero.dogedex2.api.DogsApi.retrofitService
+import com.cojayero.dogedex2.api.dto.DogDTOMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class DogRepository {
-    suspend fun downloadDogs():List<Dog>{
-       return withContext(Dispatchers.IO){
+    suspend fun downloadDogs(): List<Dog> {
+        return withContext(Dispatchers.IO) {
             //getFakeDogs()
-         val doglistApiResponse =   retrofitService.getAllDogs()
-           doglistApiResponse.data.dogs
+            val doglistApiResponse = retrofitService.getAllDogs()
+            val dogDTOList = doglistApiResponse.data.dogs
+            val dogDTOMapper = DogDTOMapper()
+            dogDTOMapper.fromDogDTOListToDogDomainList(dogDTOList)
+
         }
     }
     /* En el prototipado usabamos el peso como un double, pero en el api es un string

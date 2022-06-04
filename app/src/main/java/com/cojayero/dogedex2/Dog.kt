@@ -1,17 +1,20 @@
 package com.cojayero.dogedex2
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class Dog(
     val id: Long,
     val index: Int,
-    @field:Json(name = "name_en") val name: String,
-    @field:Json(name = "dog_type") val type: String,
-    @field:Json(name = "height_female") val heightFemale: Double,
-    @field:Json(name = "height_male") val heightMale: Double,
-    @field:Json(name = "image_url") val imageURL: String,
-    @field:Json(name = "life_expectancy") val lifeExpectancy: String,
+    val name: String,
+    val type: String,
+    val heightFemale: String,
+    val heightMale: String,
+    val imageURL: String,
+    val lifeExpectancy: String,
     val temperament: String,
-    @field:Json(name = "weight_female") val weightFemale: String,
-    @field:Json(name = "weight_male") val weightMale: String
-)
+    val weightFemale: String,
+    val weightMale: String
+) : Parcelable
