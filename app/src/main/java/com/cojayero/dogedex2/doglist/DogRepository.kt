@@ -1,20 +1,29 @@
 package com.cojayero.dogedex2.doglist
 
 import com.cojayero.dogedex2.Dog
+import com.cojayero.dogedex2.R
+import com.cojayero.dogedex2.api.ApiResponseStatus
 import com.cojayero.dogedex2.api.DogsApi.retrofitService
 import com.cojayero.dogedex2.api.dto.DogDTOMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.lang.Exception
+import java.net.UnknownHostException
 
 class DogRepository {
-    suspend fun downloadDogs(): List<Dog> {
+    suspend fun downloadDogs(): ApiResponseStatus {
         return withContext(Dispatchers.IO) {
             //getFakeDogs()
-            val doglistApiResponse = retrofitService.getAllDogs()
-            val dogDTOList = doglistApiResponse.data.dogs
-            val dogDTOMapper = DogDTOMapper()
-            dogDTOMapper.fromDogDTOListToDogDomainList(dogDTOList)
-
+            try {
+                val doglistApiResponse = retrofitService.getAllDogs()
+                val dogDTOList = doglistApiResponse.data.dogs
+                val dogDTOMapper = DogDTOMapper()
+                ApiResponseStatus.Success(dogDTOMapper.fromDogDTOListToDogDomainList(dogDTOList))
+            } catch (e: UnknownHostException) {
+                ApiResponseStatus.Error(R.string.unknown_host_exception)
+            } catch (e: Exception) {
+                ApiResponseStatus.Error(R.string.unknown_error)
+            }
         }
     }
     /* En el prototipado usabamos el peso como un double, pero en el api es un string
