@@ -11,7 +11,7 @@ import java.lang.Exception
 import java.net.UnknownHostException
 
 class DogRepository {
-    suspend fun downloadDogs(): ApiResponseStatus {
+    suspend fun downloadDogs(): ApiResponseStatus<List<Dog>> {
         return withContext(Dispatchers.IO) {
             //getFakeDogs()
             try {
