@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cojayero.dogedex2.Dog
 import com.cojayero.dogedex2.api.ApiResponseStatus
@@ -15,7 +16,7 @@ import com.cojayero.dogedex2.dogDetailActivity.DogDetailActivity
 import com.cojayero.dogedex2.dogDetailActivity.DogDetailActivity.Companion.DOG_KEY
 
 private val TAG = DogListActivity::class.java.simpleName
-
+private const val GRID_SPAN_COUNT = 3
 class DogListActivity : AppCompatActivity() {
     private val dogListViewModel: DogListViewModel by viewModels()
 
@@ -33,7 +34,8 @@ class DogListActivity : AppCompatActivity() {
             intent.putExtra(DOG_KEY, it)
             startActivity(intent)
         }
-        recycler.layoutManager = LinearLayoutManager(this)
+        recycler.layoutManager = GridLayoutManager(this, GRID_SPAN_COUNT)
+
         recycler.adapter = adapter
         dogListViewModel.dogList.observe(this) { doglist ->
             adapter.submitList(doglist)
