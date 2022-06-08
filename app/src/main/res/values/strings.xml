@@ -19,4 +19,10 @@
     <string name="register">REGISTER</string>
     <string name="confirm_password">Confirm password</string>
     <string name="sign_up">SIGNUP</string>
+    <string name="email_is_not_valid">Email is not valid</string>
+    <string name="password_must_not_be_empty">Password must not be empty</string>
+    <string name="both_passwords_must_match">Both passwords must match</string>
+    <string name="error_sign_up">Error sign up</string>
+    <string name="error_sign_in">Error login in</string>
+    <string name="user_already_exists">User already registered</string>
 </resources>

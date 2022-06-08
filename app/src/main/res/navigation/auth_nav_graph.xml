@@ -15,9 +15,5 @@
     <fragment
         android:id="@+id/signupFragment"
         android:name="com.cojayero.dogedex2.auth.SignupFragment"
-        android:label="SignupFragment" >
-        <argument
-            android:name="usuario"
-            android:defaultValue="x" />
-    </fragment>
+        android:label="SignupFragment" />
 </navigation>
