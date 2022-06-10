@@ -1,13 +1,10 @@
 package com.cojayero.dogedex2.api
 
-import com.cojayero.dogedex2.BASE_URL
-import com.cojayero.dogedex2.Dog
-import com.cojayero.dogedex2.GET_ALL_DOGS
-import com.cojayero.dogedex2.SIGN_UP_URL
+import com.cojayero.dogedex2.*
+import com.cojayero.dogedex2.api.dto.LoginDTO
 import com.cojayero.dogedex2.api.dto.SignUpDTO
 import com.cojayero.dogedex2.api.responses.DogListApiResponse
-import com.cojayero.dogedex2.api.responses.DogListResponse
-import com.cojayero.dogedex2.api.responses.SignUpApiResponse
+import com.cojayero.dogedex2.api.responses.AuthApiResponse
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.Body
@@ -22,13 +19,17 @@ private val retrofit = Retrofit.Builder()
 
 interface ApiService {
     @GET(GET_ALL_DOGS)
-    suspend fun getAllDogs():DogListApiResponse
+    suspend fun getAllDogs(): DogListApiResponse
+
     @POST(SIGN_UP_URL)
-    suspend fun signUp(@Body signUpDTO: SignUpDTO):SignUpApiResponse
+    suspend fun signUp(@Body signUpDTO: SignUpDTO): AuthApiResponse
+
+    @POST(SIGN_IN_URL)
+    suspend fun login(@Body loginDTO: LoginDTO): AuthApiResponse
 }
 
-object DogsApi{
-    val retrofitService:ApiService by lazy {
+object DogsApi {
+    val retrofitService: ApiService by lazy {
         retrofit.create(ApiService::class.java)
     }
 }

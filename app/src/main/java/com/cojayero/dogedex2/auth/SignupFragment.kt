@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.cojayero.dogedex2.R
 import com.cojayero.dogedex2.databinding.FragmentSignupBinding
+import com.cojayero.dogedex2.isValidEmail
 
 
 class SignupFragment : Fragment() {
@@ -82,8 +83,6 @@ class SignupFragment : Fragment() {
         )
     }
 
-    private fun isValidEmail(email: String?): Boolean {
-        return !email.isNullOrEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    }
+
 
 }
