@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.cojayero.dogedex2.api.ApiServiceInterceptor
 import com.cojayero.dogedex2.auth.LoginActivity
 import com.cojayero.dogedex2.databinding.ActivityMainBinding
 import com.cojayero.dogedex2.databinding.ActivitySettingsBinding
@@ -22,6 +23,8 @@ class MainActivity : AppCompatActivity() {
         if (user == null) {
             openLoginActivity()
             return
+        } else {
+            ApiServiceInterceptor.setSessionToken(user.authenticationToken)
         }
         binding.settingsFab.setOnClickListener {
             openSettingsActivity()
