@@ -27,4 +27,6 @@
     <string name="user_already_exists">User already registered</string>
     <string name="there_was_an_error">There was an error</string>
     <string name="wrong_user_or_password">Wrong user or password</string>
+    <string name="d">d</string>
+    <string name="logout">Logout</string>
 </resources>

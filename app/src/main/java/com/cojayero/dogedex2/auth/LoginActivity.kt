@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import com.cojayero.dogedex2.MainActivity
 import com.cojayero.dogedex2.R
+import com.cojayero.dogedex2.User
 import com.cojayero.dogedex2.api.ApiResponseStatus
 import com.cojayero.dogedex2.databinding.ActivityLoginBinding
 
@@ -44,6 +45,7 @@ class LoginActivity : AppCompatActivity(), LoginFragment.LoginFragmentActions,
         viewModel.user.observe(this){
             user ->
             if (user != null){
+                User.setLoggedInUser(this,user)
                 startMainActivity()
             }
         }
@@ -51,6 +53,8 @@ class LoginActivity : AppCompatActivity(), LoginFragment.LoginFragmentActions,
 
     private fun startMainActivity() {
         startActivity(Intent(this,MainActivity::class.java))
+        //matamos la actividad para que en back no vuelva a la pantalla de loging.
+        finish()
     }
 
     private fun hideLoading(hide: Boolean) {
