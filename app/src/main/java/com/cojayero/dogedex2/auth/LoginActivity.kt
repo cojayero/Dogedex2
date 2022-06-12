@@ -45,6 +45,7 @@ class LoginActivity : AppCompatActivity(), LoginFragment.LoginFragmentActions,
         viewModel.user.observe(this){
             user ->
             if (user != null){
+                Log.d(TAG, "onCreate: ${user.authenticationToken}")
                 User.setLoggedInUser(this,user)
                 startMainActivity()
             }

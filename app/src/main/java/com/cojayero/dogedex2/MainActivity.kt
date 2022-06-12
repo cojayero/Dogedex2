@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
             openLoginActivity()
             return
         } else {
+            Log.d(TAG, "onCreate: ApiInterceptor ${user.authenticationToken}")
             ApiServiceInterceptor.setSessionToken(user.authenticationToken)
         }
         binding.settingsFab.setOnClickListener {

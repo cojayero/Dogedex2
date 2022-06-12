@@ -1,5 +1,6 @@
 package com.cojayero.dogedex2.doglist
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,7 +10,7 @@ import com.cojayero.dogedex2.api.ApiResponseStatus
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import java.lang.Exception
-
+private val TAG = DogListViewModel::class.java.simpleName
 class DogListViewModel : ViewModel() {
     private val _dogList = MutableLiveData<List<Dog>>()
 
@@ -25,15 +26,25 @@ class DogListViewModel : ViewModel() {
     private val dogRepository = DogRepository()
 
     init {
-        downloadDogs()
+        //downloadDogs()
+        downloadUserDogs()
     }
 
     private fun downloadDogs() {
+        Log.d(TAG, "downloadDogs: ")
         viewModelScope.launch {
             _status.value = ApiResponseStatus.Loading()
         handleResposeStatus( dogRepository.downloadDogs())
 
 
+        }
+    }
+
+    private fun downloadUserDogs(){
+        Log.d(TAG, "downloadUserDogs: ")
+        viewModelScope.launch {
+            _status.value = ApiResponseStatus.Loading()
+            handleResposeStatus(dogRepository.getUserDogs())
         }
     }
 
@@ -45,7 +56,8 @@ class DogListViewModel : ViewModel() {
         // en _dogList.value ya si lo tomamos con el valor correto
         _status.value = apiResponseStatus as ApiResponseStatus<Any>
     }
-    fun addDogToUser(dogId:String){
+    fun addDogToUser(dogId:Long){
+        Log.d(TAG, "addDogToUser: $dogId")
         viewModelScope.launch {
             _status.value = ApiResponseStatus.Loading()
             handleAddDogToUserResponseStatus(dogRepository.addDogToUser(dogId))
@@ -53,9 +65,11 @@ class DogListViewModel : ViewModel() {
         }
     }
     private fun handleAddDogToUserResponseStatus(apiResponseStatus: ApiResponseStatus<Any>){
+        Log.d(TAG, "handleAddDogToUserResponseStatus: ")
         if(apiResponseStatus is ApiResponseStatus.Success){
             downloadDogs()
         }
         _status.value = apiResponseStatus
     }
+
 }
