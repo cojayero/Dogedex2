@@ -10,11 +10,64 @@ import com.cojayero.dogedex2.api.dto.AddDogToUserDTO
 import com.cojayero.dogedex2.api.dto.DogDTOMapper
 import com.cojayero.dogedex2.api.makeNetworkCall
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import java.lang.Exception
 import java.net.UnknownHostException
-private val  TAG = DogRepository::class.java.simpleName
+import kotlin.math.log
+
+private val TAG = DogRepository::class.java.simpleName
+
 class DogRepository {
+    suspend fun getDogCollection(): ApiResponseStatus<List<Dog>> {
+        return withContext(Dispatchers.IO) {
+            val allDogsListResponseDeferred = async { downloadDogs() }
+            val userDogListResponseDeferred = async { getUserDogs() }
+            val allDogsListResponse = allDogsListResponseDeferred.await()
+            val userDogListResponse = userDogListResponseDeferred.await()
+
+            if (allDogsListResponse is ApiResponseStatus.Error) {
+                Log.d(TAG, "getDogCollection: allDogsListResponse is error")
+                allDogsListResponse
+            } else if (userDogListResponse is ApiResponseStatus.Error) {
+                Log.d(TAG, "getDogCollection: userDogListResponse is error")
+                userDogListResponse
+            } else if (allDogsListResponse is ApiResponseStatus.Success && userDogListResponse is ApiResponseStatus.Success) {
+                Log.d(TAG, "getDogCollection: both calls are ok")
+
+                ApiResponseStatus.Success(
+                    getCollectionList(
+                        allDogsListResponse.data,
+                        userDogListResponse.data
+                    )
+                )
+            } else {
+                Log.d(TAG, "getDogCollection: Unknown Error")
+                ApiResponseStatus.Error(R.string.unknown_error)
+            }
+        }
+    }
+
+    private fun getCollectionList(allDogList: List<Dog>, userDogList: List<Dog>): List<Dog> =
+        allDogList.map {
+            if (userDogList.contains(it)) {
+                it
+            } else {
+                Dog(
+                    it.id, it.index,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+                )
+            }
+        }.sorted()
+
     suspend fun downloadDogs(): ApiResponseStatus<List<Dog>> = makeNetworkCall {
         val doglistApiResponse = retrofitService.getAllDogs()
         val dogDTOList = doglistApiResponse.data.dogs

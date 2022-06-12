@@ -27,7 +27,15 @@ class DogListViewModel : ViewModel() {
 
     init {
         //downloadDogs()
-        downloadUserDogs()
+        //downloadUserDogs()
+        getDogCollections()
+    }
+
+    private  fun getDogCollections(){
+        viewModelScope.launch {
+            _status.value = ApiResponseStatus.Loading()
+            handleResposeStatus(dogRepository.getDogCollection())
+        }
     }
 
     private fun downloadDogs() {
@@ -67,7 +75,7 @@ class DogListViewModel : ViewModel() {
     private fun handleAddDogToUserResponseStatus(apiResponseStatus: ApiResponseStatus<Any>){
         Log.d(TAG, "handleAddDogToUserResponseStatus: ")
         if(apiResponseStatus is ApiResponseStatus.Success){
-            downloadDogs()
+            getDogCollections()
         }
         _status.value = apiResponseStatus
     }
