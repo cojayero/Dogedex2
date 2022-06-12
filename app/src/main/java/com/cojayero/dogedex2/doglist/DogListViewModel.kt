@@ -17,8 +17,8 @@ class DogListViewModel : ViewModel() {
     val dogList: LiveData<List<Dog>>
         get() = _dogList
 
-    private val _status = MutableLiveData<ApiResponseStatus<List<Dog>>>()
-    val status: LiveData<ApiResponseStatus<List<Dog>>>
+    private val _status = MutableLiveData< ApiResponseStatus<Any>>()
+    val status: LiveData<ApiResponseStatus<Any>>
         get() = _status
 
 
@@ -40,6 +40,21 @@ class DogListViewModel : ViewModel() {
     private fun handleResposeStatus(apiResponseStatus: ApiResponseStatus<List<Dog>>) {
         if(apiResponseStatus is ApiResponseStatus.Success) {
             _dogList.value = apiResponseStatus.data
+        }
+        // Aqui generalizamos, porque nos da igual el tipo segun manejamos loas API,
+        // en _dogList.value ya si lo tomamos con el valor correto
+        _status.value = apiResponseStatus as ApiResponseStatus<Any>
+    }
+    fun addDogToUser(dogId:String){
+        viewModelScope.launch {
+            _status.value = ApiResponseStatus.Loading()
+            handleAddDogToUserResponseStatus(dogRepository.addDogToUser(dogId))
+
+        }
+    }
+    private fun handleAddDogToUserResponseStatus(apiResponseStatus: ApiResponseStatus<Any>){
+        if(apiResponseStatus is ApiResponseStatus.Success){
+            downloadDogs()
         }
         _status.value = apiResponseStatus
     }

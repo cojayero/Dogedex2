@@ -29,4 +29,5 @@
     <string name="wrong_user_or_password">Wrong user or password</string>
     <string name="d">d</string>
     <string name="logout">Logout</string>
+    <string name="error_adding_dog">Error adding a dog to hte user</string>
 </resources>
