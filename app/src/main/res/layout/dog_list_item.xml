@@ -29,7 +29,13 @@
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
                 android:padding="16dp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                android:textSize="32sp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:fontFamily="sans-serif-light"
+
+                />
         </RelativeLayout>
     </FrameLayout>
 </layout>

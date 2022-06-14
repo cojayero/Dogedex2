@@ -63,7 +63,8 @@ class DogRepository {
                     "",
                     "",
                     "",
-                    ""
+                    "",
+                    inCollection = false
                 )
             }
         }.sorted()

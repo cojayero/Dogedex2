@@ -30,4 +30,6 @@
     <string name="d">d</string>
     <string name="logout">Logout</string>
     <string name="error_adding_dog">Error adding a dog to hte user</string>
+    <string name="request_permission_camera_rationale">Acepta la cámara o me dará ansiedad</string>
+    <string name="title_request_camera_permission">Acept please</string>
 </resources>
