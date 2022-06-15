@@ -99,4 +99,18 @@ class DogRepository {
         Log.d(TAG, "getUserDogs: ")
         dogDTOMapper.fromDogDTOListToDogDomainList(dogDTOList)
     }
+
+    suspend fun getDogByMlId(mlDogId:String):ApiResponseStatus<Dog> = makeNetworkCall{
+        Log.d(TAG, "getDogByMlId: DogId = $mlDogId")
+        val response = retrofitService.getDogByMlId(mlDogId)
+        if (!response.isSuccess){
+            Log.d(TAG, "getDogByMlId: Error bucando el perro ${response.message}")
+            throw Exception(response.message)
+        }
+        Log.d(TAG, "getDogByMlId: perroEncontrado ${response.data}")
+        val dogDTOMapper = DogDTOMapper()
+
+        val data = response.data
+        dogDTOMapper.fromDogDTOToDogDomain(response.data.dog)
+    }
 }

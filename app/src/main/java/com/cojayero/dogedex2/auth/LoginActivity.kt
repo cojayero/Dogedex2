@@ -11,7 +11,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import com.cojayero.dogedex2.MainActivity
+import com.cojayero.dogedex2.main.MainActivity
 import com.cojayero.dogedex2.R
 import com.cojayero.dogedex2.User
 import com.cojayero.dogedex2.api.ApiResponseStatus
