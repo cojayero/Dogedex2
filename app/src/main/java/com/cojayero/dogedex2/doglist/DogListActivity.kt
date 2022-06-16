@@ -35,10 +35,16 @@ class DogListActivity : AppCompatActivity() {
             intent.putExtra(DOG_KEY, it)
             startActivity(intent)
         }
-        adapter.setOnLongItemClickListener {
+        /*
+        // Movemos el addDogToUser a DogDetailActivity
+
+
+            adapter.setOnLongItemClickListener {
             Log.d(TAG, "onCreate: setOnLogItemClicklistern")
             dogListViewModel.addDogToUser(it.id)
         }
+         */
+
         recycler.layoutManager = GridLayoutManager(this, GRID_SPAN_COUNT)
 
         recycler.adapter = adapter

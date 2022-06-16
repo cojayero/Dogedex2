@@ -72,11 +72,14 @@ class DogAdapter:ListAdapter<Dog, DogAdapter.DogViewHolder>(DiffCallback) {
                 )
                 binding.dogName.visibility = View.VISIBLE
                 binding.dogName.text = dog.index.toString()
+                /*
                 binding.dogListItemLayout.setOnLongClickListener {
                     Log.d(TAG, "bind: setOnLognClickListener ${dog.id}")
                     onLongItemClickListener?.invoke(dog)
                     true
                 }
+
+                 */
             }
         }
 

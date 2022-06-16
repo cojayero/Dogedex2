@@ -27,6 +27,7 @@ import com.cojayero.dogedex2.databinding.ActivityMainBinding
 import com.cojayero.dogedex2.databinding.ActivitySettingsBinding
 import com.cojayero.dogedex2.dogDetailActivity.DogDetailActivity
 import com.cojayero.dogedex2.dogDetailActivity.DogDetailActivity.Companion.DOG_KEY
+import com.cojayero.dogedex2.dogDetailActivity.DogDetailActivity.Companion.ID_RECOGNITION_KEY
 import com.cojayero.dogedex2.doglist.DogListActivity
 import com.cojayero.dogedex2.machinelearning.Classifier
 import com.cojayero.dogedex2.machinelearning.DogRecognition
@@ -48,7 +49,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var loadingWheel: ProgressBar
     private var isCameraReady: Boolean = false
     private val viewModel by viewModels<MainViewModel>()
-   private lateinit var classifier:Classifier
+    private lateinit var classifier: Classifier
     private val requestPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
@@ -120,23 +121,24 @@ class MainActivity : AppCompatActivity() {
                 is ApiResponseStatus.Success -> setLoadingWheelVisible(false)
             }
         }
-        viewModel.dog.observe(this){
-            dog ->
-            if(dog != null){
+        viewModel.dog.observe(this) { dog ->
+            if (dog != null) {
                 openDogDetailActivity(dog)
             }
 
         }
-        classifier = Classifier(
-            FileUtil.loadMappedFile(this@MainActivity, MODEL_PATH),
-            FileUtil.loadLabels(this@MainActivity, LABEL_PATH)
-        )
+        viewModel.dogRecognition.observe(this) {
+                enabledTakePhotoButton(it)
+        }
+
+
         requestCameraPermissions()
     }
 
     private fun openDogDetailActivity(dog: Dog) {
         val intent = Intent(this, DogDetailActivity::class.java)
-        intent.putExtra(DOG_KEY,dog)
+        intent.putExtra(ID_RECOGNITION_KEY, true)
+        intent.putExtra(DOG_KEY, dog)
         startActivity(intent)
     }
 
@@ -218,16 +220,9 @@ class MainActivity : AppCompatActivity() {
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build()
             imageAnalysis.setAnalyzer(cameraExecutor, ImageAnalysis.Analyzer { imageProxy ->
-                val rotationDegrees = imageProxy.imageInfo.rotationDegrees
-                // insert your code here.
-                //...
-                // after done, release the ImageProxy object
-                val bitmap = convertImageProxyToBitmap(imageProxy)
-                if (bitmap != null) {
-                    val dogRecognition = classifier.recognizeImage(bitmap).first()
-                    enabledTakePhotoButton(dogRecognition)
-                }
-                imageProxy.close()
+                viewModel.recognizeImage(imageProxy)
+                //enabledTakePhotoButton(dogRecognition)
+                //imageProxy.close()
             })
 
 
@@ -302,24 +297,11 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun convertImageProxyToBitmap(imageProxy: ImageProxy):Bitmap?{
-        // https://stackoverflow.com/questions/56772967/converting-imageproxy-to-bitmap
-        val image = imageProxy.image ?:return  null
-        val yBuffer = image.planes[0].buffer // Y
-        val vuBuffer = image.planes[2].buffer // VU
-
-        val ySize = yBuffer.remaining()
-        val vuSize = vuBuffer.remaining()
-
-        val nv21 = ByteArray(ySize + vuSize)
-
-        yBuffer.get(nv21, 0, ySize)
-        vuBuffer.get(nv21, ySize, vuSize)
-
-        val yuvImage = YuvImage(nv21, ImageFormat.NV21, image.width, image.height, null)
-        val out = ByteArrayOutputStream()
-        yuvImage.compressToJpeg(Rect(0, 0, yuvImage.width, yuvImage.height), 50, out)
-        val imageBytes = out.toByteArray()
-        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+    override fun onStart() {
+        super.onStart()
+        viewModel.setupClassifier(
+            FileUtil.loadMappedFile(this@MainActivity, MODEL_PATH),
+            FileUtil.loadLabels(this@MainActivity, LABEL_PATH)
+        )
     }
 }
