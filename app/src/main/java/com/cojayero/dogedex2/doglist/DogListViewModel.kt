@@ -58,7 +58,7 @@ class DogListViewModel : ViewModel() {
 
     private fun handleResposeStatus(apiResponseStatus: ApiResponseStatus<List<Dog>>) {
         if(apiResponseStatus is ApiResponseStatus.Success) {
-            _dogList.value = apiResponseStatus.data
+            _dogList.value = apiResponseStatus.data!!
         }
         // Aqui generalizamos, porque nos da igual el tipo segun manejamos loas API,
         // en _dogList.value ya si lo tomamos con el valor correto

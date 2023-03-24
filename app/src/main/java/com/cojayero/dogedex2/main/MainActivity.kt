@@ -3,10 +3,8 @@ package com.cojayero.dogedex2.main
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.*
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -15,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
@@ -24,10 +23,7 @@ import com.cojayero.dogedex2.api.ApiResponseStatus
 import com.cojayero.dogedex2.api.ApiServiceInterceptor
 import com.cojayero.dogedex2.auth.LoginActivity
 import com.cojayero.dogedex2.databinding.ActivityMainBinding
-import com.cojayero.dogedex2.databinding.ActivitySettingsBinding
-import com.cojayero.dogedex2.dogDetailActivity.DogDetailActivity
-import com.cojayero.dogedex2.dogDetailActivity.DogDetailActivity.Companion.DOG_KEY
-import com.cojayero.dogedex2.dogDetailActivity.DogDetailActivity.Companion.ID_RECOGNITION_KEY
+import com.cojayero.dogedex2.dogDetailActivity.DogDetailComposeActivity
 import com.cojayero.dogedex2.doglist.DogListActivity
 import com.cojayero.dogedex2.machinelearning.Classifier
 import com.cojayero.dogedex2.machinelearning.DogRecognition
@@ -35,7 +31,6 @@ import com.cojayero.dogedex2.settings.SettingsActivity
 import com.cojayero.dogedex2.showPhoto.WholeImageActivity
 import com.cojayero.dogedex2.showPhoto.WholeImageActivity.Companion.PHOTO_URI_KEY
 import org.tensorflow.lite.support.common.FileUtil
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -128,7 +123,7 @@ class MainActivity : AppCompatActivity() {
 
         }
         viewModel.dogRecognition.observe(this) {
-                enabledTakePhotoButton(it)
+            enabledTakePhotoButton(it)
         }
 
 
@@ -136,9 +131,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openDogDetailActivity(dog: Dog) {
-        val intent = Intent(this, DogDetailActivity::class.java)
-        intent.putExtra(ID_RECOGNITION_KEY, true)
-        intent.putExtra(DOG_KEY, dog)
+        val intent = Intent(this, DogDetailComposeActivity::class.java)
+        intent.putExtra(DogDetailComposeActivity.IS_RECOGNITION_KEY, true)
+        intent.putExtra(DogDetailComposeActivity.DOG_KEY, dog)
         startActivity(intent)
     }
 

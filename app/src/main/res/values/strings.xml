@@ -32,4 +32,8 @@
     <string name="error_adding_dog">Error adding a dog to hte user</string>
     <string name="request_permission_camera_rationale">Acepta la cámara o me dará ansiedad</string>
     <string name="title_request_camera_permission">Acept please</string>
+    <string name="title_activity_dog_detail_compose">DogDetailComposeActivity</string>
+    <string name="not_your_dog_button">Not your dog button</string>
+    <string name="error_dialog_title">Oops, something happened</string>
+    <string name="try_again">Try again</string>
 </resources>

@@ -3,6 +3,9 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
+        maven {
+            url "https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev/"
+        }
     }
 }
 dependencyResolutionManagement {
@@ -10,7 +13,14 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url "https://androidx.dev/storage/compose-compiler/repository/"
+        }
+        maven {
+            url "https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev/"
+        }
     }
+
 }
 rootProject.name = "Dogedex2"
 include ':app'

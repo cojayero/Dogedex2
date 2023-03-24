@@ -35,7 +35,7 @@ class DogDetailActivity : AppCompatActivity() {
             getString(R.string.dog_life_expectancy_format, dog.lifeExpectancy)
         binding.dog = dog
         binding.dogImage.load(dog.imageURL)
-        viewModel.status.observe(this) { status ->
+        viewModel.statusXML.observe(this) { status ->
             when (status) {
                 is ApiResponseStatus.Error -> {
                     binding.loadingWheel.visibility = View.GONE

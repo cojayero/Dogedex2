@@ -14,6 +14,7 @@ import com.cojayero.dogedex2.api.ApiResponseStatus
 import com.cojayero.dogedex2.databinding.ActivityDogListBinding
 import com.cojayero.dogedex2.dogDetailActivity.DogDetailActivity
 import com.cojayero.dogedex2.dogDetailActivity.DogDetailActivity.Companion.DOG_KEY
+import com.cojayero.dogedex2.dogDetailActivity.DogDetailComposeActivity
 
 private val TAG = DogListActivity::class.java.simpleName
 private const val GRID_SPAN_COUNT = 3
@@ -31,7 +32,7 @@ class DogListActivity : AppCompatActivity() {
         adapter.setOnItemClicklistener {
             // pasar el dog a DogDetailActivity
 
-            val intent = Intent(this, DogDetailActivity::class.java)
+            val intent = Intent(this, DogDetailComposeActivity::class.java)
             intent.putExtra(DOG_KEY, it)
             startActivity(intent)
         }

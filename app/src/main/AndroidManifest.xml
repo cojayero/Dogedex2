@@ -20,6 +20,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Dogedex2">
         <activity
+            android:name=".dogDetailActivity.DogDetailComposeActivity"
+            android:exported="false"
+            android:label="@string/title_activity_dog_detail_compose"
+            android:theme="@style/Theme.Dogedex2" />
+        <activity
             android:name=".showPhoto.WholeImageActivity"
             android:exported="false" />
         <activity
